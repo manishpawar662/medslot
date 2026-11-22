@@ -1,0 +1,19 @@
+# Spring Tool Suite / Eclipse Workspace Metadata
+.metadata/
+.sonarlint/
+.recommenders/
+
+# OS & Root Editor Files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Environment & Local Secrets
+.env
+.env.local
+*.log
+
+# Future Frontend (Node / React / Vite)
+node_modules/
+dist/
