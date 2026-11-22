@@ -1,5 +1,12 @@
 package com.medslot.platform.booking;
 
+import java.time.Instant;
+import java.util.List;
+import java.util.UUID;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.medslot.platform.common.BusinessConflictException;
 import com.medslot.platform.common.ResourceNotFoundException;
 import com.medslot.platform.identity.User;
@@ -8,12 +15,8 @@ import com.medslot.platform.identity.UserRole;
 import com.medslot.platform.scheduling.SlotStatus;
 import com.medslot.platform.scheduling.TimeSlot;
 import com.medslot.platform.scheduling.TimeSlotRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
-import java.util.UUID;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -76,5 +79,12 @@ public class BookingService {
         appointment.getSlot().setStatus(SlotStatus.AVAILABLE);
 
         return AppointmentResponseDto.from(appointment);
+    }
+    
+    @Transactional(readOnly = true)
+    public List<PatientAppointmentViewDto> getMyAppointments(UUID patientId) {
+        return appointmentRepository.findAllByPatientIdWithDetails(patientId).stream()
+                .map(PatientAppointmentViewDto::from)
+                .toList();
     }
 }

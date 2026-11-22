@@ -93,4 +93,17 @@ public class SchedulingService {
                 .map(TimeSlotResponseDto::from)
                 .toList();
     }
+    
+    @Transactional(readOnly = true)
+    public List<DoctorScheduleSlotDto> getMySchedule(UUID doctorUserId, Instant from, Instant to) {
+        if (!to.isAfter(from)) {
+            throw new IllegalArgumentException("'to' timestamp must be strictly after 'from'");
+        }
+        Doctor doctor = doctorRepository.findByUserId(doctorUserId)
+                .orElseThrow(() -> new ResourceNotFoundException("Doctor profile not found for user: " + doctorUserId));
+
+        return timeSlotRepository.findDoctorSchedule(doctor.getId(), from, to).stream()
+                .map(DoctorScheduleSlotDto::from)
+                .toList();
+    }
 }

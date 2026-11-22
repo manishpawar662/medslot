@@ -1,3 +1,12 @@
+management:
+  endpoint:
+    health:
+      show-details: when-authorized
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
 app:
   jwt:
     secret: ${JWT_SECRET:bWVkc2xvdC1zdXBlci1zZWNyZXQta2V5LWZvci1qd3QtdG9rZW4tc2lnbmluZy0yMDI2}

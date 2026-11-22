@@ -34,4 +34,18 @@ public interface TimeSlotRepository extends JpaRepository<TimeSlot, UUID> {
             @Param("windowStart") Instant windowStart,
             @Param("windowEnd") Instant windowEnd
     );
+    
+    @Query("""
+            SELECT s FROM TimeSlot s
+            JOIN FETCH s.clinic
+            WHERE s.doctor.id = :doctorId
+              AND s.startTime >= :from
+              AND s.startTime <= :to
+            ORDER BY s.startTime ASC
+            """)
+    List<TimeSlot> findDoctorSchedule(
+            @Param("doctorId") UUID doctorId,
+            @Param("from") Instant from,
+            @Param("to") Instant to
+    );
 }
