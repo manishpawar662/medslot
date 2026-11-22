@@ -30,4 +30,11 @@ public class SchedulingController {
     ) {
         return ResponseEntity.ok(schedulingService.getAvailableSlots(doctorId, from, to));
     }
+    
+    @PostMapping("/bulk")
+    public ResponseEntity<List<TimeSlotResponseDto>> generateBulkSlots(
+            @Valid @RequestBody BulkCreateSlotsRequestDto request
+    ) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(schedulingService.generateBulkSlots(request));
+    }
 }

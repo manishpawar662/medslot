@@ -38,8 +38,10 @@ public class SecurityConfig {
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/clinics/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/clinics/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/v1/slots/available").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/v1/slots").hasAnyRole("DOCTOR", "ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/v1/slots/**").hasAnyRole("DOCTOR", "ADMIN")
                         .requestMatchers("/api/v1/appointments/**").hasRole("PATIENT")
                         .anyRequest().authenticated()
                 )
